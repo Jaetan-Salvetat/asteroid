@@ -6,6 +6,7 @@ import (
 	"asteroid/scene/settings"
 	"asteroid/ui"
 	"asteroid/ui/input"
+	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten/v2"
 
@@ -15,6 +16,7 @@ import (
 type MainMenuScene struct {
 	navigator      scene.Navigator
 	settingsButton ui.TextButton
+	background     ebiten.Image
 }
 
 func NewMainMenuScene(sm scene.Navigator) *MainMenuScene {
@@ -23,6 +25,7 @@ func NewMainMenuScene(sm scene.Navigator) *MainMenuScene {
 	return &MainMenuScene{
 		navigator:      sm,
 		settingsButton: settingsBtn,
+		background:     *assets.MenuBackground(),
 	}
 }
 
@@ -38,6 +41,7 @@ func (menu *MainMenuScene) Update(in input.Mouse) error {
 
 func (menu *MainMenuScene) Draw(scene *ebiten.Image) {
 	menu.settingsButton.Draw(scene)
+	scene.DrawImage(&menu.background, &ebiten.DrawImageOptions{})
 }
 
 func (menu *MainMenuScene) OnEnter() {}

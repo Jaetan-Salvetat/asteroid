@@ -45,7 +45,9 @@ func (sm *SceneManager) Pop() {
 		return
 	}
 
-	sm.Current().OnExit()
+	last := len(sm.stack) - 1
+	sm.stack[last].OnExit()
+	sm.stack[last] = nil
 	sm.stack = sm.stack[:len(sm.stack)-1]
 
 	if len(sm.stack) > 0 {
