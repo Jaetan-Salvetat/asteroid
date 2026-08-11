@@ -6,16 +6,26 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 
 	"asteroid/config"
+	"asteroid/core"
 	"asteroid/scene"
 	"asteroid/scene/mainmenu"
+	"asteroid/ui/input"
 )
 
 type Game struct {
 	sceneManager *scene.SceneManager
+	mouse        input.Mouse
 }
 
 func (g *Game) Update() error {
-	return g.sceneManager.Update()
+	x, y := ebiten.CursorPosition()
+
+	g.mouse.Next(
+		core.Vector2{X: float64(x), Y: float64(y)},
+		ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft),
+	)
+
+	return g.sceneManager.Update(g.mouse)
 }
 
 func (g *Game) Draw(scene *ebiten.Image) {
@@ -29,12 +39,15 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	var window = config.Window()
-	var sm = scene.NewSceneManager()
-	var game = Game{sceneManager: sm}
+	var game = Game{}
+	var sm = scene.NewSceneManager(game.mouse)
 
+	game.sceneManager = sm
 	sm.Push(mainmenu.NewMainMenuScene(sm))
-	ebiten.SetWindowSize(window.Width, window.Height)
+
+	ebiten.SetWindowSize(window.Width/2, window.Height/2)
 	ebiten.SetWindowTitle(config.AppName())
+
 	if err := ebiten.RunGame(&game); err != nil {
 		log.Fatal(err)
 	}

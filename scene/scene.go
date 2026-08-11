@@ -1,9 +1,13 @@
 package scene
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"asteroid/ui/input"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type Scene interface {
-	Update() error
+	Update(in input.Mouse) error
 	Draw(*ebiten.Image)
 	OnEnter()
 	OnExit()
@@ -11,11 +15,17 @@ type Scene interface {
 	OnResume()
 }
 
+type Navigator interface {
+	Push(Scene)
+	Pop()
+	Replace(Scene)
+}
+
 type SceneManager struct {
 	stack []Scene
 }
 
-func NewSceneManager() *SceneManager {
+func NewSceneManager(in input.Mouse) *SceneManager {
 	return &SceneManager{
 		stack: []Scene{},
 	}
@@ -54,12 +64,12 @@ func (sm *SceneManager) Replace(scene Scene) {
 	sm.Current().OnEnter()
 }
 
-func (sm *SceneManager) Update() error {
+func (sm *SceneManager) Update(in input.Mouse) error {
 	if len(sm.stack) <= 0 {
 		return nil
 	}
 
-	return sm.stack[len(sm.stack)-1].Update()
+	return sm.stack[len(sm.stack)-1].Update(in)
 }
 
 func (sm *SceneManager) Draw(scene *ebiten.Image) {
