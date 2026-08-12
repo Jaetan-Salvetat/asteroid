@@ -1,4 +1,4 @@
-package core
+package geo
 
 type Vector2 struct{ X, Y float64 }
 type Rect struct{ X, Y, Width, Height float64 }

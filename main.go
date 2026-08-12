@@ -6,7 +6,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 
 	"asteroid/config"
-	"asteroid/core"
+	"asteroid/core/geo"
 	"asteroid/scene"
 	"asteroid/scene/mainmenu"
 	"asteroid/ui/input"
@@ -21,7 +21,7 @@ func (g *Game) Update() error {
 	x, y := ebiten.CursorPosition()
 
 	g.mouse.Next(
-		core.Vector2{X: float64(x), Y: float64(y)},
+		geo.Vector2{X: float64(x), Y: float64(y)},
 		ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft),
 	)
 

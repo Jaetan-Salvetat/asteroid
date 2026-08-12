@@ -1,9 +1,9 @@
 package mainmenu
 
 import (
-	"asteroid/core"
+	"asteroid/config"
+	"asteroid/core/geo"
 	"asteroid/scene"
-	"asteroid/scene/settings"
 	"asteroid/ui"
 	"asteroid/ui/input"
 	_ "image/png"
@@ -14,34 +14,38 @@ import (
 )
 
 type MainMenuScene struct {
-	navigator      scene.Navigator
-	settingsButton ui.TextButton
-	background     ebiten.Image
+	navigator  scene.Navigator
+	background *ebiten.Image
+	buttons    []ui.Button
 }
 
 func NewMainMenuScene(sm scene.Navigator) *MainMenuScene {
-	settingsBtn := ui.NewTextButton("Go to settings", assets.Font(30), core.Vector2{X: 30, Y: 30})
+	centerX := float64(config.Window().Width) / 2
 
 	return &MainMenuScene{
-		navigator:      sm,
-		settingsButton: settingsBtn,
-		background:     *assets.MenuBackground(),
+		navigator:  sm,
+		background: assets.MenuBackground(),
+		buttons: []ui.Button{
+			ui.NewButton("PLAY", geo.SizeLarge, geo.Vector2{X: centerX, Y: 460}),
+			ui.NewButton("SETTINGS", geo.SizeMedium, geo.Vector2{X: centerX, Y: 540}),
+			ui.NewButton("QUIT", geo.SizeSmall, geo.Vector2{X: centerX, Y: 620}),
+		},
 	}
 }
 
 func (menu *MainMenuScene) Update(in input.Mouse) error {
-	settingsPressed := menu.settingsButton.Update(in)
-
-	if settingsPressed {
-		menu.navigator.Push(settings.NewSettingsScene(menu.navigator))
+	for i := range menu.buttons {
+		menu.buttons[i].Update(in)
 	}
-
 	return nil
 }
 
 func (menu *MainMenuScene) Draw(scene *ebiten.Image) {
-	menu.settingsButton.Draw(scene)
-	scene.DrawImage(&menu.background, &ebiten.DrawImageOptions{})
+	scene.DrawImage(menu.background, &ebiten.DrawImageOptions{})
+
+	for i := range menu.buttons {
+		menu.buttons[i].Draw(scene)
+	}
 }
 
 func (menu *MainMenuScene) OnEnter() {}

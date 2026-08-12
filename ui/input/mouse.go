@@ -1,6 +1,6 @@
 package input
 
-import "asteroid/core"
+import "asteroid/core/geo"
 
 type Phase uint8
 
@@ -13,7 +13,7 @@ const (
 )
 
 type Mouse struct {
-	Cursor core.Vector2
+	Cursor geo.Vector2
 	State  Phase
 }
 
@@ -21,7 +21,7 @@ func (m *Mouse) IsDown() bool {
 	return m.State == Pressed || m.State == JustPressed
 }
 
-func (m *Mouse) Next(cursor core.Vector2, isDown bool) {
+func (m *Mouse) Next(cursor geo.Vector2, isDown bool) {
 	m.Cursor = cursor
 
 	if m.State == Unknown {

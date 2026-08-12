@@ -2,7 +2,7 @@ package settings
 
 import (
 	"asteroid/assets"
-	"asteroid/core"
+	"asteroid/core/geo"
 	"asteroid/scene"
 	"asteroid/ui"
 	"asteroid/ui/input"
@@ -16,7 +16,7 @@ type SettingsScene struct {
 }
 
 func NewSettingsScene(sm scene.Navigator) *SettingsScene {
-	backBtn := ui.NewTextButton("Go back", assets.Font(30), core.Vector2{X: 30, Y: 30})
+	backBtn := ui.NewTextButton("Go back", assets.Font(30), geo.Vector2{X: 30, Y: 30})
 
 	return &SettingsScene{
 		navigator:  sm,
