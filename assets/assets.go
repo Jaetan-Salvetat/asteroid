@@ -32,6 +32,17 @@ func Font(size float64) *text.GoTextFace {
 	}
 }
 
+func lazyBytes(path string) func() []byte {
+	return sync.OnceValue(func() []byte {
+		b, err := fs.ReadFile(path)
+		if err != nil {
+			panic(err)
+		}
+
+		return b
+	})
+}
+
 func lazyImage(path string) func() *ebiten.Image {
 	return sync.OnceValue(func() *ebiten.Image {
 		image, _, err := ebitenutil.NewImageFromFileSystem(fs, path)
@@ -45,6 +56,9 @@ func lazyImage(path string) func() *ebiten.Image {
 }
 
 var (
+	SfxHover = lazyBytes("sfx/hover.ogg")
+	SfxClick = lazyBytes("sfx/click.ogg")
+
 	MenuBackground = lazyImage("images/game/background/neon_grid_1.png")
 	ButtonIdle     = lazyImage("images/ui/button/normal.webp")
 	ButtonActive   = lazyImage("images/ui/button/active.webp")

@@ -10,17 +10,19 @@ import (
 
 	"asteroid/assets"
 	"asteroid/core/geo"
+	"asteroid/core/sound"
 	"asteroid/ui/input"
 )
 
 type Button struct {
-	label string
-	face  *text.GoTextFace
-	size  geo.Size
-	scale float64
-	rect  geo.Rect
-	mouse input.Mouse
-	state input.ButtonState
+	label         string
+	face          *text.GoTextFace
+	size          geo.Size
+	scale         float64
+	rect          geo.Rect
+	mouse         input.Mouse
+	state         input.ButtonState
+	previousState input.ButtonState
 }
 
 func NewButton(l string, s geo.Size, p geo.Vector2) Button {
@@ -38,8 +40,11 @@ func (s *Button) Height() float64 {
 }
 
 func (s *Button) Update(in input.Mouse) bool {
+	s.previousState = s.state
 	s.state = input.NewButtonStateFromMouse(in, s.rect)
 	s.mouse = in
+
+	s.playSound()
 
 	return s.state == input.StateHovered && in.State == input.JustReleased
 }
@@ -67,6 +72,14 @@ func (s *Button) image() *ebiten.Image {
 		return assets.ButtonDisabled()
 	default:
 		return assets.ButtonIdle()
+	}
+}
+
+func (s *Button) playSound() {
+	if s.previousState == input.StateIdle && s.state == input.StateHovered {
+		sound.Hover.Play()
+	} else if s.previousState == input.StateHovered && s.state == input.StateActive {
+		sound.Click.Play()
 	}
 }
 
