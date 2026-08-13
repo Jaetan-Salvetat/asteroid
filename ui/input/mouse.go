@@ -2,7 +2,7 @@ package input
 
 import "asteroid/core/geo"
 
-type Phase uint8
+type Phase int
 
 const (
 	Unknown Phase = iota

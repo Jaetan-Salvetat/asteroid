@@ -19,8 +19,7 @@ type Menu struct {
 	quitButton     *ui.Button
 }
 
-func NewMenu(navigator scene.Navigator) *Menu {
-	columnWidth := config.Window().Width / 2
+func NewMenu(navigator scene.Navigator, width float64) *Menu {
 
 	menu := &Menu{
 		navigator:      navigator,
@@ -30,7 +29,7 @@ func NewMenu(navigator scene.Navigator) *Menu {
 	}
 
 	column := ui.NewColumn(
-		geo.Rect{X: 0, Y: 0, Width: float64(columnWidth), Height: float64(config.Window().Height)},
+		geo.Rect{X: 0, Y: 0, Width: float64(width), Height: float64(config.Window().Height)},
 		input.AlignCenter, input.AlignCenter, 30,
 		menu.startButton, menu.settingsButton, menu.quitButton,
 	)

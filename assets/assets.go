@@ -60,6 +60,8 @@ var (
 	SfxClick = lazyBytes("sfx/click.ogg")
 
 	MenuBackground = lazyImage("images/game/background/neon_grid_1.png")
+	ShipCyan       = lazyImage("images/game/ship/01_cyan.png")
+	ShieldRing1    = lazyImage("images/game/shield/ring_2.png")
 	ButtonIdle     = lazyImage("images/ui/button/normal.webp")
 	ButtonActive   = lazyImage("images/ui/button/active.webp")
 	ButtonHovered  = lazyImage("images/ui/button/hover.webp")

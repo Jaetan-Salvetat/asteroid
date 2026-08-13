@@ -1,6 +1,6 @@
 package input
 
-type Alignment uint8
+type Alignment int
 
 const (
 	AlignStart Alignment = iota

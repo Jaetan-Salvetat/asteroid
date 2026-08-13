@@ -1,0 +1,97 @@
+package mainmenu
+
+import (
+	"asteroid/assets"
+	"asteroid/core/geo"
+	"math"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
+
+const (
+	baseScale           float64 = 2
+	haloRestScale               = 2.16
+	haloBreathAmplitude         = 0.025
+	haloBreathPeriod            = 7.0
+	shipTiltAmplitude           = 5 * math.Pi / 180
+	shipTiltPeriod              = 17
+	shipFloatAmplitude          = 20
+	shipFloatPeriod             = 10
+)
+
+type MenuShip struct {
+	position     geo.Vector2
+	anchor       geo.Vector2
+	ship         *ebiten.Image
+	halo         *ebiten.Image
+	haloScale    float64
+	shipRotation float64
+	time         float64
+}
+
+func NewMenuShip(position geo.Vector2) *MenuShip {
+	return &MenuShip{
+		ship:      assets.ShipCyan(),
+		halo:      assets.ShieldRing1(),
+		anchor:    position,
+		position:  position,
+		haloScale: baseScale,
+		time:      0,
+	}
+}
+
+func (s *MenuShip) Update() error {
+	s.time += 1 / float64(ebiten.TPS())
+
+	s.calculateHaloScale()
+	s.calculatehipRotation()
+	s.calculateLevitation()
+
+	return nil
+}
+
+func (s *MenuShip) Draw(scene *ebiten.Image) {
+	s.drawHalo(scene)
+	s.drawShip(scene)
+}
+
+func (s *MenuShip) drawShip(scene *ebiten.Image) {
+	width, height := s.ship.Bounds().Dx(), s.ship.Bounds().Dy()
+	opt := &ebiten.DrawImageOptions{}
+
+	opt.GeoM.Translate(-float64(width)/2, -float64(height)/2)
+	opt.GeoM.Scale(baseScale, baseScale)
+	opt.GeoM.Rotate(s.shipRotation)
+	opt.GeoM.Translate(s.position.X, s.position.Y)
+	scene.DrawImage(s.ship, opt)
+}
+
+func (s *MenuShip) drawHalo(scene *ebiten.Image) {
+	width, height := s.halo.Bounds().Dx(), s.halo.Bounds().Dy()
+	opt := &ebiten.DrawImageOptions{}
+
+	opt.GeoM.Translate(-float64(width)/2, -float64(height)/2)
+	opt.GeoM.Scale(s.haloScale, s.haloScale)
+	opt.ColorScale.ScaleAlpha(0.16)
+
+	opt.GeoM.Translate(s.position.X, s.position.Y)
+	scene.DrawImage(s.halo, opt)
+}
+
+func (s *MenuShip) calculateHaloScale() {
+	phase := 2 * math.Pi * s.time / haloBreathPeriod
+	s.haloScale = haloRestScale * (1 + math.Sin(phase)*haloBreathAmplitude)
+}
+
+func (s *MenuShip) calculatehipRotation() {
+	phase := 2 * math.Pi * s.time / shipTiltPeriod
+	s.shipRotation = math.Sin(phase) * shipTiltAmplitude
+}
+
+func (s *MenuShip) calculateLevitation() {
+	phase := 2 * math.Pi * s.time / shipFloatPeriod
+	s.position = geo.Vector2{
+		X: s.anchor.X,
+		Y: s.anchor.Y + math.Sin(phase)*shipFloatAmplitude,
+	}
+}

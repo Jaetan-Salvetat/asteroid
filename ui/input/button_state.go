@@ -2,7 +2,7 @@ package input
 
 import "asteroid/core/geo"
 
-type ButtonState uint8
+type ButtonState int
 
 const (
 	StateIdle ButtonState = iota

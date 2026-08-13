@@ -47,6 +47,7 @@ func main() {
 
 	ebiten.SetWindowSize(int(window.Width/2), int(window.Height/2))
 	ebiten.SetWindowTitle(config.AppName())
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	if err := ebiten.RunGame(&game); err != nil {
 		log.Fatal(err)
