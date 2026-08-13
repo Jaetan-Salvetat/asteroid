@@ -34,7 +34,7 @@ func (g *Game) Draw(scene *ebiten.Image) {
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	var window = config.Window()
-	return window.Width, window.Height
+	return int(window.Width), int(window.Height)
 }
 
 func main() {
@@ -45,7 +45,7 @@ func main() {
 	game.sceneManager = sm
 	sm.Push(mainmenu.NewMainMenuScene(sm))
 
-	ebiten.SetWindowSize(window.Width/2, window.Height/2)
+	ebiten.SetWindowSize(int(window.Width/2), int(window.Height/2))
 	ebiten.SetWindowTitle(config.AppName())
 
 	if err := ebiten.RunGame(&game); err != nil {
