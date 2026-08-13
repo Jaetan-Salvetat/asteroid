@@ -17,7 +17,7 @@ import (
 type Button struct {
 	label         string
 	face          *text.GoTextFace
-	size          geo.Size
+	size          geo.ButtonSize
 	scale         float64
 	rect          geo.Rect
 	mouse         input.Mouse
@@ -25,13 +25,13 @@ type Button struct {
 	previousState input.ButtonState
 }
 
-func NewButton(l string, s geo.Size, p geo.Vector2) Button {
+func NewButton(l string, s geo.ButtonSize, p geo.Vector2) *Button {
 	img := assets.ButtonIdle()
 	width := float64(img.Bounds().Dx()) * scale(s)
 	height := float64(img.Bounds().Dy()) * scale(s)
 	f := assets.Font(fontSize(s))
 
-	return Button{label: l, size: s, scale: scale(s), face: f, rect: geo.Rect{X: p.X, Y: p.Y, Width: width, Height: height}}
+	return &Button{label: l, size: s, scale: scale(s), face: f, rect: geo.Rect{X: p.X, Y: p.Y, Width: width, Height: height}}
 }
 
 func (s *Button) Height() float64 {
@@ -62,6 +62,15 @@ func (s *Button) Draw(scene *ebiten.Image) {
 	text.Draw(scene, s.label, s.face, textOpts)
 }
 
+func (s *Button) Bounds() geo.Rect {
+	return s.rect
+}
+
+func (s *Button) Place(vector geo.Vector2) {
+	s.rect.X = vector.X
+	s.rect.Y = vector.Y
+}
+
 func (s *Button) image() *ebiten.Image {
 	switch s.state {
 	case input.StateActive:
@@ -83,7 +92,7 @@ func (s *Button) playSound() {
 	}
 }
 
-func scale(size geo.Size) float64 {
+func scale(size geo.ButtonSize) float64 {
 	switch size {
 	case geo.SizeSmall:
 		return 1.2
@@ -94,7 +103,7 @@ func scale(size geo.Size) float64 {
 	}
 }
 
-func fontSize(size geo.Size) float64 {
+func fontSize(size geo.ButtonSize) float64 {
 	switch size {
 	case geo.SizeSmall:
 		return 22

@@ -7,5 +7,5 @@ func (r *Rect) Contains(p Vector2) bool {
 	xEnd := r.X + r.Width
 	yEnd := r.Y + r.Height
 
-	return  p.X >= r.X && p.X <= xEnd && p.Y >= r.Y && p.Y <= yEnd
+	return p.X >= r.X && p.X <= xEnd && p.Y >= r.Y && p.Y <= yEnd
 }

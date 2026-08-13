@@ -1,9 +1,9 @@
 package geo
 
-type Size uint8
+type ButtonSize uint8
 
 const (
-	SizeSmall Size = iota
+	SizeSmall ButtonSize = iota
 	SizeMedium
 	SizeLarge
 )

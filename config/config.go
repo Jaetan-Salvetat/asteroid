@@ -1,8 +1,8 @@
 package config
 
 type windowCfg struct {
-	Width  int
-	Height int
+	Width  float64
+	Height float64
 }
 
 func Window() windowCfg {

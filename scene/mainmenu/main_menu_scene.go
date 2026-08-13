@@ -1,10 +1,7 @@
 package mainmenu
 
 import (
-	"asteroid/config"
-	"asteroid/core/geo"
 	"asteroid/scene"
-	"asteroid/ui"
 	"asteroid/ui/input"
 	_ "image/png"
 
@@ -16,42 +13,35 @@ import (
 type MainMenuScene struct {
 	navigator  scene.Navigator
 	background *ebiten.Image
-	buttons    []ui.Button
+	leftMenu   Menu
 }
 
-func NewMainMenuScene(sm scene.Navigator) *MainMenuScene {
-	centerX := float64(config.Window().Width) / 2
-
+func NewMainMenuScene(navigator scene.Navigator) *MainMenuScene {
 	return &MainMenuScene{
-		navigator:  sm,
+		navigator:  navigator,
 		background: assets.MenuBackground(),
-		buttons: []ui.Button{
-			ui.NewButton("PLAY", geo.SizeLarge, geo.Vector2{X: centerX, Y: 460}),
-			ui.NewButton("SETTINGS", geo.SizeMedium, geo.Vector2{X: centerX, Y: 540}),
-			ui.NewButton("QUIT", geo.SizeSmall, geo.Vector2{X: centerX, Y: 620}),
-		},
+		leftMenu:   *NewMenu(navigator),
 	}
 }
 
-func (menu *MainMenuScene) Update(in input.Mouse) error {
-	for i := range menu.buttons {
-		menu.buttons[i].Update(in)
+func (s *MainMenuScene) Update(in input.Mouse) error {
+	error := s.leftMenu.Update(in)
+	if error != nil {
+		return error
 	}
+
 	return nil
 }
 
-func (menu *MainMenuScene) Draw(scene *ebiten.Image) {
-	scene.DrawImage(menu.background, &ebiten.DrawImageOptions{})
-
-	for i := range menu.buttons {
-		menu.buttons[i].Draw(scene)
-	}
+func (s *MainMenuScene) Draw(scene *ebiten.Image) {
+	scene.DrawImage(s.background, &ebiten.DrawImageOptions{})
+	s.leftMenu.Draw(scene)
 }
 
-func (menu *MainMenuScene) OnEnter() {}
+func (s *MainMenuScene) OnEnter() {}
 
-func (menu *MainMenuScene) OnExit() {}
+func (s *MainMenuScene) OnExit() {}
 
-func (menu *MainMenuScene) OnPause() {}
+func (s *MainMenuScene) OnPause() {}
 
-func (menu *MainMenuScene) OnResume() {}
+func (s *MainMenuScene) OnResume() {}
