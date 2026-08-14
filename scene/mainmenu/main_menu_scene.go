@@ -1,6 +1,7 @@
 package mainmenu
 
 import (
+	"asteroid/assets"
 	"asteroid/config"
 	"asteroid/core/geo"
 	"asteroid/scene"
@@ -12,7 +13,7 @@ import (
 
 type MainMenuScene struct {
 	navigator  scene.Navigator
-	background *MenuBackgroud
+	background *ebiten.Image
 	ship       *MenuShip
 	menu       *Menu
 }
@@ -24,7 +25,7 @@ func NewMainMenuScene(navigator scene.Navigator) *MainMenuScene {
 
 	return &MainMenuScene{
 		navigator:  navigator,
-		background: NewMenuBackground(),
+		background: assets.MenuBackground(),
 		ship:       NewMenuShip(geo.Vector2{X: shipX, Y: shipY}),
 		menu:       NewMenu(navigator, menuWidth),
 	}
@@ -32,11 +33,6 @@ func NewMainMenuScene(navigator scene.Navigator) *MainMenuScene {
 
 func (s *MainMenuScene) Update(in input.Mouse) error {
 	error := s.menu.Update(in)
-	if error != nil {
-		return error
-	}
-
-	error = s.background.Update()
 	if error != nil {
 		return error
 	}
@@ -50,7 +46,7 @@ func (s *MainMenuScene) Update(in input.Mouse) error {
 }
 
 func (s *MainMenuScene) Draw(scene *ebiten.Image) {
-	s.background.Draw(scene)
+	scene.DrawImage(s.background, &ebiten.DrawImageOptions{})
 	s.ship.Draw(scene)
 	s.menu.Draw(scene)
 }
