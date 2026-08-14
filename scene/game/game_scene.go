@@ -1,43 +1,37 @@
 package game
 
 import (
-	"asteroid/assets"
+	"asteroid/config"
 	"asteroid/core/geo"
 	"asteroid/scene"
-	"asteroid/ui"
 	"asteroid/ui/input"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
 type GameScene struct {
-	navigator  scene.Navigator
-	backButton ui.TextButton
+	navigator scene.Navigator
+	ship      Ship
 }
 
-func NewGameScene(sm scene.Navigator) *GameScene {
-	backBtn := ui.NewTextButton("Go back", assets.Font(30), geo.Vector2{X: 30, Y: 30})
+func NewGameScene(navigator scene.Navigator) *GameScene {
+	shipX, shipY := config.Window().Width/2, config.Window().Height/2
 
 	return &GameScene{
-		navigator:  sm,
-		backButton: backBtn,
+		navigator: navigator,
+		ship:      NewShip(geo.Vector2{X: shipX, Y: shipY}),
 	}
 }
 
-func (s *GameScene) Update(in input.Mouse) error {
-	backBtnCLicked := s.backButton.Update(in)
-
-	if backBtnCLicked {
-		s.navigator.Pop()
-	}
-
+func (s *GameScene) Update(in input.Inputs) error {
 	return nil
 }
 
 func (s *GameScene) Draw(scene *ebiten.Image) {
-	text.Draw(scene, "In game!", assets.Font(50), &text.DrawOptions{})
-	s.backButton.Draw(scene)
+	opt := geo.GeoMCentered(s.ship.sprite.Bounds())
+	opt.GeoM.Rotate(s.ship.angle)
+	opt.GeoM.Translate(s.ship.position.X, s.ship.position.Y)
+	scene.DrawImage(s.ship.sprite, opt)
 }
 
 func (s *GameScene) OnEnter() {}

@@ -27,14 +27,14 @@ func (s *TextButton) Height() float64 {
 	return height
 }
 
-func (s *TextButton) Update(in input.Mouse) bool {
-	if s.rect.Contains(in.Cursor) {
+func (s *TextButton) Update(in input.Inputs) bool {
+	if s.rect.Contains(in.Mouse.Cursor) {
 		s.hovered = true
 	} else {
 		s.hovered = false
 	}
 
-	s.state = in.State
+	s.state = in.Mouse.State
 
 	return s.hovered && s.state == input.JustReleased
 }

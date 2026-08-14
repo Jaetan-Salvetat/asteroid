@@ -38,7 +38,7 @@ func NewMenu(navigator scene.Navigator, width float64) *Menu {
 	return menu
 }
 
-func (s *Menu) Update(in input.Mouse) error {
+func (s *Menu) Update(in input.Inputs) error {
 	startClicked := s.startButton.Update(in)
 	settingsClicked := s.settingsButton.Update(in)
 	quitClicked := s.quitButton.Update(in)

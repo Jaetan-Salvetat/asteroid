@@ -24,7 +24,7 @@ func NewSettingsScene(sm scene.Navigator) *SettingsScene {
 	}
 }
 
-func (settings *SettingsScene) Update(in input.Mouse) error {
+func (settings *SettingsScene) Update(in input.Inputs) error {
 	backBtnCLicked := settings.backButton.Update(in)
 
 	if backBtnCLicked {

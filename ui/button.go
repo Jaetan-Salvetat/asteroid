@@ -39,14 +39,14 @@ func (s *Button) Height() float64 {
 	return height
 }
 
-func (s *Button) Update(in input.Mouse) bool {
+func (s *Button) Update(in input.Inputs) bool {
 	s.previousState = s.state
-	s.state = input.NewButtonStateFromMouse(in, s.rect)
-	s.mouse = in
+	s.state = input.NewButtonStateFromMouse(in.Mouse, s.rect)
+	s.mouse = in.Mouse
 
 	s.playSound()
 
-	return s.state == input.StateHovered && in.State == input.JustReleased
+	return s.state == input.StateHovered && in.Mouse.State == input.JustReleased
 }
 
 func (s *Button) Draw(scene *ebiten.Image) {

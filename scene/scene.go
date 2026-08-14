@@ -7,7 +7,7 @@ import (
 )
 
 type Scene interface {
-	Update(in input.Mouse) error
+	Update(in input.Inputs) error
 	Draw(*ebiten.Image)
 	OnEnter()
 	OnExit()
@@ -25,7 +25,7 @@ type SceneManager struct {
 	stack []Scene
 }
 
-func NewSceneManager(in input.Mouse) *SceneManager {
+func NewSceneManager() *SceneManager {
 	return &SceneManager{
 		stack: []Scene{},
 	}
@@ -66,7 +66,7 @@ func (sm *SceneManager) Replace(scene Scene) {
 	sm.Current().OnEnter()
 }
 
-func (sm *SceneManager) Update(in input.Mouse) error {
+func (sm *SceneManager) Update(in input.Inputs) error {
 	if len(sm.stack) <= 0 {
 		return nil
 	}

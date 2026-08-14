@@ -31,7 +31,7 @@ func NewMainMenuScene(navigator scene.Navigator) *MainMenuScene {
 	}
 }
 
-func (s *MainMenuScene) Update(in input.Mouse) error {
+func (s *MainMenuScene) Update(in input.Inputs) error {
 	error := s.menu.Update(in)
 	if error != nil {
 		return error

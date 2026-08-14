@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 
 	"asteroid/config"
 	"asteroid/core/geo"
@@ -14,18 +15,22 @@ import (
 
 type Game struct {
 	sceneManager *scene.SceneManager
-	mouse        input.Mouse
+	inputs       input.Inputs
 }
 
 func (g *Game) Update() error {
+	pressedKeys := []ebiten.Key{}
 	x, y := ebiten.CursorPosition()
 
-	g.mouse.Next(
+	g.inputs.Mouse.Next(
 		geo.Vector2{X: float64(x), Y: float64(y)},
 		ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft),
 	)
 
-	return g.sceneManager.Update(g.mouse)
+	pressedKeys = inpututil.AppendPressedKeys(pressedKeys[:0])
+	g.inputs.Keyboard.Next(pressedKeys)
+
+	return g.sceneManager.Update(g.inputs)
 }
 
 func (g *Game) Draw(scene *ebiten.Image) {
@@ -39,8 +44,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	var window = config.Window()
-	var game = Game{}
-	var sm = scene.NewSceneManager(game.mouse)
+	var game = Game{inputs: input.NewInputs()}
+	var sm = scene.NewSceneManager()
 
 	game.sceneManager = sm
 	sm.Push(mainmenu.NewMainMenuScene(sm))
