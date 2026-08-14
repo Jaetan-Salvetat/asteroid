@@ -13,3 +13,10 @@ func (s Rect) Contains(p Vector2) bool {
 func (s Vector2) Add(x, y float64) Vector2 {
 	return Vector2{X: s.X + x, Y: s.Y + y}
 }
+
+func (s Vector2) DirectionTo(to Vector2) Vector2 {
+	return Vector2{
+		X: to.X - s.X,
+		Y: to.Y - s.Y,
+	}
+}

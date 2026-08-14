@@ -25,6 +25,8 @@ func NewScene(navigator scene.Navigator) *GameScene {
 }
 
 func (s *GameScene) Update(in input.Inputs) error {
+	s.ship.Move(in)
+	s.ship.Rotate(in.Mouse.Cursor)
 	return nil
 }
 
