@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Asteroid</title>
+<style>
+	html, body {
+		margin: 0;
+		height: 100%;
+		background: #000;
+		overflow: hidden;
+	}
+	body {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	canvas {
+		display: block;
+	}
+	#start {
+		background: none;
+		border: 1px solid #fff;
+		color: #fff;
+		cursor: pointer;
+		font: 600 1.25rem/1 system-ui, sans-serif;
+		letter-spacing: 0.1em;
+		padding: 1rem 2rem;
+	}
+</style>
+</head>
+<body>
+<button id="start" type="button">CLICK TO PLAY</button>
+<script src="wasm_exec.js"></script>
+<script>
+	const startButton = document.getElementById("start");
+	const go = new Go();
+	const wasmReady = WebAssembly.instantiateStreaming(fetch("game.wasm"), go.importObject);
+
+	wasmReady.catch((error) => {
+		startButton.disabled = true;
+		startButton.textContent = "LOAD FAILED";
+		console.error("failed to load game.wasm", error);
+	});
+
+	startButton.addEventListener("click", async () => {
+		startButton.remove();
+		const { instance } = await wasmReady;
+		go.run(instance);
+	}, { once: true });
+</script>
+</body>
+</html>

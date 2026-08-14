@@ -1,0 +1,7 @@
+:80 {
+	root * /srv
+	encode zstd gzip
+	header Cache-Control "no-cache"
+	respond /up 200
+	file_server
+}

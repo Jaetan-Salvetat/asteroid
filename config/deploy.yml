@@ -1,0 +1,18 @@
+service: asteroid
+image: jaetan-salvetat/asteroid
+
+servers:
+  web:
+    - 204.168.156.177
+
+proxy:
+  ssl: true
+  host: asteroid.jaetan.dev
+  app_port: 80
+
+registry:
+  server: localhost:5555
+
+builder:
+  arch: arm64
+  remote: ssh://root@204.168.156.177
