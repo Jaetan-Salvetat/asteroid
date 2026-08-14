@@ -1,31 +1,26 @@
 package ui
 
 import (
-	_ "image/png"
-
-	_ "golang.org/x/image/webp"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 
 	"asteroid/assets"
 	"asteroid/core/geo"
 	"asteroid/core/sound"
-	"asteroid/ui/input"
+	"asteroid/input"
 )
 
 type Button struct {
 	label         string
 	face          *text.GoTextFace
-	size          geo.ButtonSize
+	size          ButtonSize
 	scale         float64
 	rect          geo.Rect
-	mouse         input.Mouse
-	state         input.ButtonState
-	previousState input.ButtonState
+	state         ButtonState
+	previousState ButtonState
 }
 
-func NewButton(l string, s geo.ButtonSize, p geo.Vector2) *Button {
+func NewButton(l string, s ButtonSize, p geo.Vector2) *Button {
 	img := assets.ButtonIdle()
 	width := float64(img.Bounds().Dx()) * scale(s)
 	height := float64(img.Bounds().Dy()) * scale(s)
@@ -34,22 +29,16 @@ func NewButton(l string, s geo.ButtonSize, p geo.Vector2) *Button {
 	return &Button{label: l, size: s, scale: scale(s), face: f, rect: geo.Rect{X: p.X, Y: p.Y, Width: width, Height: height}}
 }
 
-func (s *Button) Height() float64 {
-	_, height := text.Measure(s.label, s.face, 0)
-	return height
-}
-
 func (s *Button) Update(in input.Inputs) bool {
 	s.previousState = s.state
-	s.state = input.NewButtonStateFromMouse(in.Mouse, s.rect)
-	s.mouse = in.Mouse
+	s.state = NewButtonStateFromMouse(in.Mouse, s.rect)
 
 	s.playSound()
 
-	return s.state == input.StateHovered && in.Mouse.State == input.JustReleased
+	return s.state == StateHovered && in.Mouse.State == input.JustReleased
 }
 
-func (s *Button) Draw(scene *ebiten.Image) {
+func (s Button) Draw(scene *ebiten.Image) {
 	imgOpts := &ebiten.DrawImageOptions{}
 	imgOpts.GeoM.Scale(s.scale, s.scale)
 	imgOpts.GeoM.Translate(s.rect.X, s.rect.Y)
@@ -62,7 +51,7 @@ func (s *Button) Draw(scene *ebiten.Image) {
 	text.Draw(scene, s.label, s.face, textOpts)
 }
 
-func (s *Button) Bounds() geo.Rect {
+func (s Button) Bounds() geo.Rect {
 	return s.rect
 }
 
@@ -71,13 +60,13 @@ func (s *Button) Place(vector geo.Vector2) {
 	s.rect.Y = vector.Y
 }
 
-func (s *Button) image() *ebiten.Image {
+func (s Button) image() *ebiten.Image {
 	switch s.state {
-	case input.StateActive:
+	case StateActive:
 		return assets.ButtonActive()
-	case input.StateHovered:
+	case StateHovered:
 		return assets.ButtonHovered()
-	case input.StateDisabled:
+	case StateDisabled:
 		return assets.ButtonDisabled()
 	default:
 		return assets.ButtonIdle()
@@ -85,29 +74,29 @@ func (s *Button) image() *ebiten.Image {
 }
 
 func (s *Button) playSound() {
-	if s.previousState == input.StateIdle && s.state == input.StateHovered {
+	if s.previousState == StateIdle && s.state == StateHovered {
 		sound.Hover.Play()
-	} else if s.previousState == input.StateHovered && s.state == input.StateActive {
+	} else if s.previousState == StateHovered && s.state == StateActive {
 		sound.Click.Play()
 	}
 }
 
-func scale(size geo.ButtonSize) float64 {
+func scale(size ButtonSize) float64 {
 	switch size {
-	case geo.SizeSmall:
+	case SizeSmall:
 		return 1.2
-	case geo.SizeMedium:
+	case SizeMedium:
 		return 1.6
 	default:
 		return 2
 	}
 }
 
-func fontSize(size geo.ButtonSize) float64 {
+func fontSize(size ButtonSize) float64 {
 	switch size {
-	case geo.SizeSmall:
+	case SizeSmall:
 		return 22
-	case geo.SizeMedium:
+	case SizeMedium:
 		return 29
 	default:
 		return 36

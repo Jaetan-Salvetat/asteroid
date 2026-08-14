@@ -1,4 +1,4 @@
-package geo
+package render
 
 import (
 	"image"

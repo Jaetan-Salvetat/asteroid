@@ -1,4 +1,4 @@
-package input
+package ui
 
 type Alignment int
 

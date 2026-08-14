@@ -8,14 +8,18 @@ import (
 
 	"asteroid/config"
 	"asteroid/core/geo"
+	"asteroid/input"
 	"asteroid/scene"
 	"asteroid/scene/mainmenu"
-	"asteroid/ui/input"
 )
 
 type Game struct {
 	sceneManager *scene.SceneManager
 	inputs       input.Inputs
+}
+
+func NewGame() Game {
+	return Game{inputs: input.NewInputs()}
 }
 
 func (g *Game) Update() error {
@@ -44,14 +48,13 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	var window = config.Window()
-	var game = Game{inputs: input.NewInputs()}
-	var sm = scene.NewSceneManager()
+	var game = NewGame()
+	game.sceneManager = scene.NewManager()
 
-	game.sceneManager = sm
-	sm.Push(mainmenu.NewMainMenuScene(sm))
+	game.sceneManager.Push(mainmenu.NewScene(game.sceneManager))
 
 	ebiten.SetWindowSize(int(window.Width/2), int(window.Height/2))
-	ebiten.SetWindowTitle(config.AppName())
+	ebiten.SetWindowTitle(config.AppName)
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	if err := ebiten.RunGame(&game); err != nil {

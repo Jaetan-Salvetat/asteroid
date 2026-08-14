@@ -1,6 +1,9 @@
-package input
+package ui
 
-import "asteroid/core/geo"
+import (
+	"asteroid/core/geo"
+	"asteroid/input"
+)
 
 type ButtonState int
 
@@ -11,7 +14,7 @@ const (
 	StateDisabled
 )
 
-func NewButtonStateFromMouse(mouse Mouse, btnRect geo.Rect) ButtonState {
+func NewButtonStateFromMouse(mouse input.Mouse, btnRect geo.Rect) ButtonState {
 	if btnRect.Contains(mouse.Cursor) {
 		if mouse.IsDown() {
 			return StateActive
@@ -19,6 +22,6 @@ func NewButtonStateFromMouse(mouse Mouse, btnRect geo.Rect) ButtonState {
 			return StateHovered
 		}
 	}
-	
+
 	return StateIdle
 }

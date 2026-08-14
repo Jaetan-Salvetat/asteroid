@@ -5,7 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 
 	"asteroid/core/geo"
-	"asteroid/ui/input"
+	"asteroid/input"
 )
 
 type TextButton struct {

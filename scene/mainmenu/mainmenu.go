@@ -4,9 +4,8 @@ import (
 	"asteroid/assets"
 	"asteroid/config"
 	"asteroid/core/geo"
+	"asteroid/input"
 	"asteroid/scene"
-	"asteroid/ui/input"
-	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -18,7 +17,7 @@ type MainMenuScene struct {
 	menu       *Menu
 }
 
-func NewMainMenuScene(navigator scene.Navigator) *MainMenuScene {
+func NewScene(navigator scene.Navigator) *MainMenuScene {
 	menuWidth := config.Window().Width / 2
 	shipX := config.Window().Width * 0.65
 	shipY := config.Window().Height / 2

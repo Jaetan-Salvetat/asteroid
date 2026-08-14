@@ -3,8 +3,9 @@ package game
 import (
 	"asteroid/config"
 	"asteroid/core/geo"
+	"asteroid/core/render"
+	"asteroid/input"
 	"asteroid/scene"
-	"asteroid/ui/input"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -14,7 +15,7 @@ type GameScene struct {
 	ship      Ship
 }
 
-func NewGameScene(navigator scene.Navigator) *GameScene {
+func NewScene(navigator scene.Navigator) *GameScene {
 	shipX, shipY := config.Window().Width/2, config.Window().Height/2
 
 	return &GameScene{
@@ -28,8 +29,8 @@ func (s *GameScene) Update(in input.Inputs) error {
 }
 
 func (s *GameScene) Draw(scene *ebiten.Image) {
-	opt := geo.GeoMCentered(s.ship.sprite.Bounds())
-	opt.GeoM.Rotate(s.ship.angle)
+	opt := render.GeoMCentered(s.ship.sprite.Bounds())
+	opt.GeoM.Rotate(s.ship.rotation)
 	opt.GeoM.Translate(s.ship.position.X, s.ship.position.Y)
 	scene.DrawImage(s.ship.sprite, opt)
 }

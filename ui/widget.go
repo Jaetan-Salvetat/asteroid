@@ -1,4 +1,4 @@
-package input
+package ui
 
 import (
 	"asteroid/core/geo"

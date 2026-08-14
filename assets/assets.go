@@ -1,6 +1,10 @@
 package assets
 
 import (
+	_ "image/png"
+
+	_ "golang.org/x/image/webp"
+
 	"bytes"
 	"embed"
 	"sync"

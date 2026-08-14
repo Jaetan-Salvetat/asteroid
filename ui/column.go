@@ -2,18 +2,17 @@ package ui
 
 import (
 	"asteroid/core/geo"
-	"asteroid/ui/input"
 )
 
 type Column struct {
 	rect              geo.Rect
-	alignment         input.Alignment
-	verticalAlignment input.Alignment
+	alignment         Alignment
+	verticalAlignment Alignment
 	gap               float64
-	children          []input.Widget
+	children          []Widget
 }
 
-func NewColumn(rect geo.Rect, alignment input.Alignment, verticalAlignment input.Alignment, gap float64, chidren ...input.Widget) *Column {
+func NewColumn(rect geo.Rect, alignment Alignment, verticalAlignment Alignment, gap float64, chidren ...Widget) *Column {
 	return &Column{
 		rect:              rect,
 		alignment:         alignment,
@@ -35,9 +34,9 @@ func (s *Column) Place() {
 
 func (s *Column) offsetX(width float64) float64 {
 	switch s.alignment {
-	case input.AlignCenter:
+	case AlignCenter:
 		return (s.rect.Width - width) / 2
-	case input.AlignEnd:
+	case AlignEnd:
 		return s.rect.Width - width
 	default:
 		return 0
@@ -46,9 +45,9 @@ func (s *Column) offsetX(width float64) float64 {
 
 func (s *Column) offsetY() float64 {
 	switch s.verticalAlignment {
-	case input.AlignCenter:
+	case AlignCenter:
 		return (s.rect.Height - s.contentHeight()) / 2
-	case input.AlignEnd:
+	case AlignEnd:
 		return s.rect.Height - s.contentHeight()
 	default:
 		return 0

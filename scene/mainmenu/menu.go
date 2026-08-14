@@ -3,11 +3,11 @@ package mainmenu
 import (
 	"asteroid/config"
 	"asteroid/core/geo"
+	"asteroid/input"
 	"asteroid/scene"
 	"asteroid/scene/game"
 	"asteroid/scene/settings"
 	"asteroid/ui"
-	"asteroid/ui/input"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -23,14 +23,14 @@ func NewMenu(navigator scene.Navigator, width float64) *Menu {
 
 	menu := &Menu{
 		navigator:      navigator,
-		startButton:    ui.NewButton("PLAY", geo.SizeLarge, geo.Vector2{X: 0, Y: 0}),
-		settingsButton: ui.NewButton("SETTINGS", geo.SizeLarge, geo.Vector2{X: 0, Y: 0}),
-		quitButton:     ui.NewButton("QUIT", geo.SizeLarge, geo.Vector2{X: 0, Y: 0}),
+		startButton:    ui.NewButton("PLAY", ui.SizeLarge, geo.Vector2{X: 0, Y: 0}),
+		settingsButton: ui.NewButton("SETTINGS", ui.SizeLarge, geo.Vector2{X: 0, Y: 0}),
+		quitButton:     ui.NewButton("QUIT", ui.SizeLarge, geo.Vector2{X: 0, Y: 0}),
 	}
 
 	column := ui.NewColumn(
 		geo.Rect{X: 0, Y: 0, Width: float64(width), Height: float64(config.Window().Height)},
-		input.AlignCenter, input.AlignCenter, 30,
+		ui.AlignCenter, ui.AlignCenter, 30,
 		menu.startButton, menu.settingsButton, menu.quitButton,
 	)
 	column.Place()
@@ -44,10 +44,10 @@ func (s *Menu) Update(in input.Inputs) error {
 	quitClicked := s.quitButton.Update(in)
 
 	if startClicked {
-		s.navigator.Push(game.NewGameScene(s.navigator))
+		s.navigator.Push(game.NewScene(s.navigator))
 	}
 	if settingsClicked {
-		s.navigator.Push(settings.NewSettingsScene(s.navigator))
+		s.navigator.Push(settings.NewScene(s.navigator))
 	}
 	if quitClicked {
 		return ebiten.Termination

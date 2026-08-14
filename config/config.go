@@ -5,10 +5,10 @@ type windowCfg struct {
 	Height float64
 }
 
-func Window() windowCfg {
-	return windowCfg{Width: 1920, Height: 1080}
-}
+var window = windowCfg{Width: 1920, Height: 1080}
 
-func AppName() string {
-	return "Asteroid"
+const AppName = "Asteroid"
+
+func Window() windowCfg {
+	return window
 }

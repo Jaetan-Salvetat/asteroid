@@ -18,7 +18,7 @@ func (s Phase) IsDown() bool {
 
 func (s Phase) Next(isDown bool) Phase {
 	if s == Unknown {
-		return  Released
+		return Released
 	}
 
 	if isDown {
@@ -26,11 +26,11 @@ func (s Phase) Next(isDown bool) Phase {
 			return Pressed
 		}
 
-		return  JustPressed
+		return JustPressed
 	}
 
 	if s.IsDown() {
-		return  JustReleased
+		return JustReleased
 	}
 
 	return Released

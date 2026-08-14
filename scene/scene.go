@@ -1,7 +1,7 @@
 package scene
 
 import (
-	"asteroid/ui/input"
+	"asteroid/input"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -25,67 +25,67 @@ type SceneManager struct {
 	stack []Scene
 }
 
-func NewSceneManager() *SceneManager {
+func NewManager() *SceneManager {
 	return &SceneManager{
 		stack: []Scene{},
 	}
 }
 
-func (sm *SceneManager) Push(scene Scene) {
-	if len(sm.stack) > 0 {
-		sm.Current().OnPause()
+func (s *SceneManager) Push(scene Scene) {
+	if len(s.stack) > 0 {
+		s.Current().OnPause()
 	}
 
-	sm.stack = append(sm.stack, scene)
+	s.stack = append(s.stack, scene)
 	scene.OnEnter()
 }
 
-func (sm *SceneManager) Pop() {
-	if len(sm.stack) <= 0 {
+func (s *SceneManager) Pop() {
+	if len(s.stack) <= 1 {
 		return
 	}
 
-	last := len(sm.stack) - 1
-	sm.stack[last].OnExit()
-	sm.stack[last] = nil
-	sm.stack = sm.stack[:len(sm.stack)-1]
+	last := len(s.stack) - 1
+	s.stack[last].OnExit()
+	s.stack[last] = nil
+	s.stack = s.stack[:len(s.stack)-1]
 
-	if len(sm.stack) > 0 {
-		sm.Current().OnResume()
+	if len(s.stack) > 0 {
+		s.Current().OnResume()
 	}
 }
 
-func (sm *SceneManager) Replace(scene Scene) {
-	if len(sm.stack) > 0 {
-		sm.stack[len(sm.stack)-1].OnExit()
-		sm.stack[len(sm.stack)-1] = scene
+func (s *SceneManager) Replace(scene Scene) {
+	if len(s.stack) > 0 {
+		s.stack[len(s.stack)-1].OnExit()
+		s.stack[len(s.stack)-1] = scene
 	} else {
-		sm.stack = append(sm.stack, scene)
+		s.stack = append(s.stack, scene)
 	}
 
-	sm.Current().OnEnter()
+	s.Current().OnEnter()
 }
 
-func (sm *SceneManager) Update(in input.Inputs) error {
-	if len(sm.stack) <= 0 {
+func (s *SceneManager) Update(in input.Inputs) error {
+	if len(s.stack) <= 0 {
 		return nil
 	}
 
-	return sm.stack[len(sm.stack)-1].Update(in)
+	return s.stack[len(s.stack)-1].Update(in)
 }
 
-func (sm *SceneManager) Draw(scene *ebiten.Image) {
-	if len(sm.stack) <= 0 {
+func (s *SceneManager) Draw(scene *ebiten.Image) {
+	if len(s.stack) <= 0 {
 		return
 	}
 
-	sm.stack[len(sm.stack)-1].Draw(scene)
+	s.stack[len(s.stack)-1].Draw(scene)
 }
 
-func (sm *SceneManager) Current() Scene {
-	if len(sm.stack) <= 0 {
+func (s *SceneManager) Current() Scene {
+	if len(s.stack) <= 0 {
 		return nil
 	}
 
-	return sm.stack[len(sm.stack)-1]
+	return s.stack[len(s.stack)-1]
 }

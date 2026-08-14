@@ -1,4 +1,4 @@
-package geo
+package ui
 
 type ButtonSize int
 
