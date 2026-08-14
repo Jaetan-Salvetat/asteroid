@@ -24,7 +24,7 @@ func NewScene(navigator scene.Navigator) *MainMenuScene {
 
 	return &MainMenuScene{
 		navigator:  navigator,
-		background: assets.MenuBackground(),
+		background: assets.Background(),
 		ship:       NewMenuShip(geo.Vector2{X: shipX, Y: shipY}),
 		menu:       NewMenu(navigator, menuWidth),
 	}
