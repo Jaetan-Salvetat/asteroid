@@ -29,6 +29,7 @@ func NewScene(navigator scene.Navigator) *GameScene {
 
 func (s *GameScene) Update(in input.Inputs) error {
 	s.ship.Move(in)
+	s.ship.Wrap()
 	s.ship.Rotate(in.Mouse.Cursor)
 	return nil
 }
@@ -37,6 +38,7 @@ func (s *GameScene) Draw(scene *ebiten.Image) {
 	scene.DrawImage(s.background, &ebiten.DrawImageOptions{})
 	opt := render.GeoMCentered(s.ship.sprite.Bounds())
 	opt.GeoM.Rotate(s.ship.rotation)
+	opt.GeoM.Scale(0.55, 0.55)
 	opt.GeoM.Translate(s.ship.position.X, s.ship.position.Y)
 	scene.DrawImage(s.ship.sprite, opt)
 }

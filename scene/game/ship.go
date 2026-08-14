@@ -2,6 +2,7 @@ package game
 
 import (
 	"asteroid/assets"
+	"asteroid/config"
 	"asteroid/core/geo"
 	"asteroid/input"
 	"math"
@@ -43,4 +44,23 @@ func (s *Ship) Rotate(mouse geo.Vector2) {
 	delta := s.position.DirectionTo(mouse)
 	rotation := math.Atan2(delta.Y, delta.X)
 	s.rotation = rotation
+}
+
+func (s *Ship) Wrap() {
+	window := config.Window()
+	shipRayon := float64(s.sprite.Bounds().Dx() / 2)
+	leftLimit := 0.0
+	rightLimit := window.Width
+	topLimit := 0.0
+	bottomLimit := window.Height
+
+	if s.position.X-shipRayon <= leftLimit {
+		s.position.X = 0 + shipRayon
+	} else if s.position.X+shipRayon >= rightLimit {
+		s.position.X = rightLimit - shipRayon
+	} else if s.position.Y-shipRayon <= topLimit {
+		s.position.Y = topLimit + shipRayon
+	} else if s.position.Y+shipRayon >= bottomLimit {
+		s.position.Y = bottomLimit - shipRayon
+	}
 }
