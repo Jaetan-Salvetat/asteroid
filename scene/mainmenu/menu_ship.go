@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	baseScale           float64 = 2
+	baseScale           float64 = 3
 	haloRestScale               = 2.16
 	haloBreathAmplitude         = 0.025
 	haloBreathPeriod            = 7.0
@@ -18,6 +18,7 @@ const (
 	shipTiltPeriod              = 17
 	shipFloatAmplitude          = 20
 	shipFloatPeriod             = 10
+	baseShipRotation            = -60 * math.Pi / 180
 )
 
 type MenuShip struct {
@@ -45,7 +46,7 @@ func (s *MenuShip) Update() error {
 	s.time += 1 / float64(ebiten.TPS())
 
 	s.calculateHaloScale()
-	s.calculatehipRotation()
+	s.calculateShipRotation()
 	s.calculateLevitation()
 
 	return nil
@@ -79,9 +80,9 @@ func (s *MenuShip) calculateHaloScale() {
 	s.haloScale = haloRestScale * (1 + math.Sin(phase)*haloBreathAmplitude)
 }
 
-func (s *MenuShip) calculatehipRotation() {
+func (s *MenuShip) calculateShipRotation() {
 	phase := 2 * math.Pi * s.time / shipTiltPeriod
-	s.shipRotation = math.Sin(phase) * shipTiltAmplitude
+	s.shipRotation = (math.Sin(phase) * shipTiltAmplitude) + baseShipRotation
 }
 
 func (s *MenuShip) calculateLevitation() {
