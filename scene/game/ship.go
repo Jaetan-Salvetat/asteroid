@@ -55,11 +55,13 @@ func (s *Ship) Wrap() {
 	bottomLimit := window.Height
 
 	if s.position.X+shipRayon <= leftLimit {
-		s.position.X = rightLimit - shipRayon
+		s.position.X = rightLimit + shipRayon
 	} else if s.position.X-shipRayon >= rightLimit {
-		s.position.X = leftLimit + shipRayon
-	} else if s.position.Y+shipRayon <= topLimit {
-		s.position.Y = bottomLimit - shipRayon
+		s.position.X = leftLimit - shipRayon
+	}
+
+	if s.position.Y+shipRayon <= topLimit {
+		s.position.Y = bottomLimit + shipRayon
 	} else if s.position.Y-shipRayon >= bottomLimit {
 		s.position.Y = topLimit - shipRayon
 	}
