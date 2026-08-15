@@ -1,8 +1,6 @@
 package assets
 
 import (
-	_ "image/png"
-
 	_ "golang.org/x/image/webp"
 
 	"bytes"
@@ -63,21 +61,21 @@ var (
 	SfxHover = lazyBytes("sfx/hover.ogg")
 	SfxClick = lazyBytes("sfx/click.ogg")
 
-	Background     = lazyImage("images/game/background/neon_grid_1.png")
-	ShipCyan       = lazyImage("images/game/ship/01_cyan.png")
-	ShieldRing1    = lazyImage("images/game/shield/ring_2.png")
+	Background     = lazyImage("images/game/background/neon_grid_1.webp")
+	ShipCyan       = lazyImage("images/game/ship/01_cyan.webp")
+	ShieldRing1    = lazyImage("images/game/shield/ring_2.webp")
 	ButtonIdle     = lazyImage("images/ui/button/normal.webp")
 	ButtonActive   = lazyImage("images/ui/button/active.webp")
 	ButtonHovered  = lazyImage("images/ui/button/hover.webp")
 	ButtonDisabled = lazyImage("images/ui/button/disabled.webp")
 
-	AsteroidSmall01  = lazyImage("images/game/asteroid/small_01.png")
-	AsteroidSmall03  = lazyImage("images/game/asteroid/small_03.png")
-	AsteroidSmall05  = lazyImage("images/game/asteroid/small_05.png")
-	AsteroidMedium01 = lazyImage("images/game/asteroid/medium_01.png")
-	AsteroidMedium03 = lazyImage("images/game/asteroid/medium_03.png")
-	AsteroidMedium05 = lazyImage("images/game/asteroid/medium_05.png")
-	AsteroidLarge01  = lazyImage("images/game/asteroid/large_01.png")
-	AsteroidLarge03  = lazyImage("images/game/asteroid/large_03.png")
-	AsteroidLarge05  = lazyImage("images/game/asteroid/large_05.png")
+	AsteroidSmall01  = lazyImage("images/game/asteroid/small_01.webp")
+	AsteroidSmall03  = lazyImage("images/game/asteroid/small_03.webp")
+	AsteroidSmall05  = lazyImage("images/game/asteroid/small_05.webp")
+	AsteroidMedium01 = lazyImage("images/game/asteroid/medium_01.webp")
+	AsteroidMedium03 = lazyImage("images/game/asteroid/medium_03.webp")
+	AsteroidMedium05 = lazyImage("images/game/asteroid/medium_05.webp")
+	AsteroidLarge01  = lazyImage("images/game/asteroid/large_01.webp")
+	AsteroidLarge03  = lazyImage("images/game/asteroid/large_03.webp")
+	AsteroidLarge05  = lazyImage("images/game/asteroid/large_05.webp")
 )
