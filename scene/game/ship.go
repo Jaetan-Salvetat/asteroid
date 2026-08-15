@@ -48,7 +48,7 @@ func (s *Ship) Rotate(mouse geo.Vector2) {
 
 func (s *Ship) Wrap() {
 	window := config.Window()
-	shipRayon := float64(s.sprite.Bounds().Dx() / 2)
+	shipRayon := float64(s.sprite.Bounds().Dx()) / 2
 	leftLimit := 0.0
 	rightLimit := window.Width
 	topLimit := 0.0
