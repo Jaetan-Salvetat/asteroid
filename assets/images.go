@@ -1,8 +1,6 @@
 package assets
 
 import (
-	"fmt"
-	"math/rand/v2"
 	"sync"
 
 	_ "golang.org/x/image/webp"
@@ -11,19 +9,15 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-func loadImage(path string) *ebiten.Image {
-	image, _, err := ebitenutil.NewImageFromFileSystem(fs, path)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return image
-}
-
 func lazyImage(path string) func() *ebiten.Image {
 	return sync.OnceValue(func() *ebiten.Image {
-		return loadImage(path)
+		image, _, err := ebitenutil.NewImageFromFileSystem(fs, path)
+
+		if err != nil {
+			panic(err)
+		}
+
+		return image
 	})
 }
 
@@ -56,32 +50,9 @@ type shield struct {
 }
 
 type asteroid struct {
-	Small  func() []*ebiten.Image
-	Medium func() []*ebiten.Image
-	Large  func() []*ebiten.Image
-}
-
-const maxAsteroid = 6
-
-type AsteroidSize string
-
-const (
-	Small  AsteroidSize = "small"
-	Medium AsteroidSize = "medium"
-	Large  AsteroidSize = "large"
-)
-
-func lazyLoadAsteroids(size AsteroidSize) func() []*ebiten.Image {
-	return sync.OnceValue(func() []*ebiten.Image {
-		images := []*ebiten.Image{}
-
-		for i := range maxAsteroid {
-			image := loadImage(fmt.Sprintf("images/game/asteroid/%s_0%d.webp", size, i+1))
-			images = append(images, image)
-		}
-
-		return images
-	})
+	Small  func() *ebiten.Image
+	Medium func() *ebiten.Image
+	Large  func() *ebiten.Image
 }
 
 var (
@@ -115,23 +86,9 @@ var (
 		Purple: lazyImage("images/game/shield/ring_3.webp"),
 	}
 
-	asteroids = asteroid{
-		Small:  lazyLoadAsteroids(Small),
-		Medium: lazyLoadAsteroids(Medium),
-		Large:  lazyLoadAsteroids(Large),
-	}
-
-	// return a random asteroid image for the given size
-	Asteroid = func(size AsteroidSize) *ebiten.Image {
-		index := rand.IntN(maxAsteroid - 1)
-
-		switch size {
-		case Medium:
-			return asteroids.Medium()[index]
-		case Large:
-			return asteroids.Large()[index]
-		default:
-			return asteroids.Small()[index]
-		}
+	Asteroid = asteroid{
+		Small:  lazyImage("images/game/asteroid/small_01.webp"),
+		Medium: lazyImage("images/game/asteroid/small_01.webp"),
+		Large:  lazyImage("images/game/asteroid/small_06.webp"),
 	}
 )

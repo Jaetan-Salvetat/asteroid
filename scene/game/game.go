@@ -28,6 +28,11 @@ func (s *GameScene) Update(in input.Inputs) error {
 	intent := NewIntentFrom(in)
 	frame := s.world.Update(intent)
 	s.sessionState.Update(frame)
+
+	if s.world.IsCleared() {
+		s.world.SpawnWave(s.world.ship.Circle)
+	}
+
 	return nil
 }
 

@@ -8,8 +8,9 @@ import (
 )
 
 type World struct {
-	ship    Ship
-	bullets Bullets
+	ship      Ship
+	bullets   Bullets
+	asteroids Asteroids
 }
 
 func NewWorld() World {
@@ -35,6 +36,15 @@ func (s *World) Update(intent Intent) Frame {
 func (s *World) Draw(scene *ebiten.Image) {
 	s.bullets.Draw(scene)
 	s.ship.Draw(scene)
+	s.asteroids.Draw(scene)
+}
+
+func (s *World) IsCleared() bool {
+	return len(s.asteroids) <= 0
+}
+
+func (s *World) SpawnWave(ship geo.Circle) {
+	s.asteroids.SpawnWaved(ship)
 }
 
 func (s *World) handleCollisions() Frame {
