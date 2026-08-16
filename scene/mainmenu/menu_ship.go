@@ -58,7 +58,7 @@ func (s *MenuShip) Draw(scene *ebiten.Image) {
 }
 
 func (s *MenuShip) drawShip(scene *ebiten.Image) {
-	opt := render.GeoMCentered(s.ship.Bounds())
+	opt := render.ImageOptionsCentered(s.ship.Bounds())
 
 	opt.GeoM.Scale(baseScale, baseScale)
 	opt.GeoM.Rotate(s.shipRotation)
@@ -67,7 +67,7 @@ func (s *MenuShip) drawShip(scene *ebiten.Image) {
 }
 
 func (s *MenuShip) drawHalo(scene *ebiten.Image) {
-	opt := render.GeoMCentered(s.halo.Bounds())
+	opt := render.ImageOptionsCentered(s.halo.Bounds())
 
 	opt.GeoM.Scale(s.haloScale, s.haloScale)
 	opt.ColorScale.ScaleAlpha(0.16)

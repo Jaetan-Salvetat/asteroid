@@ -61,6 +61,7 @@ var (
 	SfxHover = lazyBytes("sfx/hover.ogg")
 	SfxClick = lazyBytes("sfx/click.ogg")
 
+	UfoShoot       = lazyImage("images/game/projectile/ufo_shot_red.webp")
 	Background     = lazyImage("images/game/background/neon_grid_1.webp")
 	ShipCyan       = lazyImage("images/game/ship/01_cyan.webp")
 	ShieldRing1    = lazyImage("images/game/shield/ring_2.webp")

@@ -5,11 +5,10 @@ import "github.com/hajimehoshi/ebiten/v2"
 type Phase int
 
 const (
-	Unknown Phase = iota
-	Pressed
-	JustPressed
-	Released
+	Released Phase = iota
 	JustReleased
+	JustPressed
+	Pressed
 )
 
 func (s Phase) IsDown() bool {
@@ -17,10 +16,6 @@ func (s Phase) IsDown() bool {
 }
 
 func (s Phase) Next(isDown bool) Phase {
-	if s == Unknown {
-		return Released
-	}
-
 	if isDown {
 		if s.IsDown() {
 			return Pressed

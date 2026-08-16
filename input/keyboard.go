@@ -19,15 +19,11 @@ func (s *Keyboard) Next(keys []ebiten.Key) {
 
 	for key := range s.Keys {
 		if !keysSet[key] {
-			delete(s.Keys, key)
+			s.Keys[key] = s.Keys[key].Next(false)
 		}
 	}
 }
 
 func (s Keyboard) Pressed(key ebiten.Key) bool {
 	return s.Keys[key] == Pressed || s.Keys[key] == JustPressed
-}
-
-func (s Keyboard) JustPressed(key ebiten.Key) bool {
-	return s.Keys[key] == JustPressed
 }
