@@ -20,7 +20,7 @@ type Bullet struct {
 
 func NewBullet(position geo.Vector2, direction geo.Vector2) Bullet {
 	return Bullet{
-		sprite:    assets.UfoShoot(),
+		sprite:    assets.Projectile.UFO(),
 		position:  position,
 		direction: direction,
 		speed:     1000,

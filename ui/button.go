@@ -21,7 +21,7 @@ type Button struct {
 }
 
 func NewButton(l string, s ButtonSize, p geo.Vector2) *Button {
-	img := assets.ButtonIdle()
+	img := assets.Button.Idle()
 	width := float64(img.Bounds().Dx()) * scale(s)
 	height := float64(img.Bounds().Dy()) * scale(s)
 	f := assets.Font(fontSize(s))
@@ -63,13 +63,13 @@ func (s *Button) Place(vector geo.Vector2) {
 func (s Button) image() *ebiten.Image {
 	switch s.state {
 	case StateActive:
-		return assets.ButtonActive()
+		return assets.Button.Active()
 	case StateHovered:
-		return assets.ButtonHovered()
+		return assets.Button.Hover()
 	case StateDisabled:
-		return assets.ButtonDisabled()
+		return assets.Button.Disabled()
 	default:
-		return assets.ButtonIdle()
+		return assets.Button.Idle()
 	}
 }
 

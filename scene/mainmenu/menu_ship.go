@@ -33,8 +33,8 @@ type MenuShip struct {
 
 func NewMenuShip(position geo.Vector2) *MenuShip {
 	return &MenuShip{
-		ship:      assets.ShipCyan(),
-		halo:      assets.ShieldRing1(),
+		ship:      assets.Ship.Cyan(),
+		halo:      assets.Shield.Cyan(),
 		anchor:    position,
 		position:  position,
 		haloScale: baseScale,

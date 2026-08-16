@@ -24,7 +24,7 @@ type Ship struct {
 
 func NewShip(position geo.Vector2) Ship {
 	return Ship{
-		sprite:        assets.ShipCyan(),
+		sprite:        assets.Ship.Cyan(),
 		speed:         500,
 		rotation:      0, //90 * math.Pi / 180,
 		position:      position,
