@@ -42,9 +42,6 @@ func newEffect(path string) Effect {
 
 func (e Effect) Play() {
 	player := ctx().NewPlayerFromBytes(e.bytes())
-
-	defer player.Close()
-
 	player.Play()
 }
 

@@ -1,6 +1,8 @@
 package assets
 
 import (
+	"fmt"
+	"math/rand/v2"
 	"sync"
 
 	_ "golang.org/x/image/webp"
@@ -9,15 +11,19 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
+func loadImage(path string) *ebiten.Image {
+	image, _, err := ebitenutil.NewImageFromFileSystem(fs, path)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return image
+}
+
 func lazyImage(path string) func() *ebiten.Image {
 	return sync.OnceValue(func() *ebiten.Image {
-		image, _, err := ebitenutil.NewImageFromFileSystem(fs, path)
-
-		if err != nil {
-			panic(err)
-		}
-
-		return image
+		return loadImage(path)
 	})
 }
 
@@ -26,12 +32,6 @@ type button struct {
 	Active   func() *ebiten.Image
 	Hover    func() *ebiten.Image
 	Disabled func() *ebiten.Image
-}
-
-type asteroids struct {
-	Small  func() []*ebiten.Image
-	Medium func() []*ebiten.Image
-	Large  func() []*ebiten.Image
 }
 
 type ship struct {
@@ -53,6 +53,35 @@ type shield struct {
 	Blue   func() *ebiten.Image
 	Cyan   func() *ebiten.Image
 	Purple func() *ebiten.Image
+}
+
+type asteroid struct {
+	Small  func() []*ebiten.Image
+	Medium func() []*ebiten.Image
+	Large  func() []*ebiten.Image
+}
+
+const maxAsteroid = 6
+
+type AsteroidSize string
+
+const (
+	Small  AsteroidSize = "small"
+	Medium AsteroidSize = "medium"
+	Large  AsteroidSize = "large"
+)
+
+func lazyLoadAsteroids(size AsteroidSize) func() []*ebiten.Image {
+	return sync.OnceValue(func() []*ebiten.Image {
+		images := []*ebiten.Image{}
+
+		for i := range maxAsteroid {
+			image := loadImage(fmt.Sprintf("images/game/asteroid/%s_0%d.webp", size, i+1))
+			images = append(images, image)
+		}
+
+		return images
+	})
 }
 
 var (
@@ -84,5 +113,25 @@ var (
 		Blue:   lazyImage("images/game/shield/ring_1.webp"),
 		Cyan:   lazyImage("images/game/shield/ring_2.webp"),
 		Purple: lazyImage("images/game/shield/ring_3.webp"),
+	}
+
+	asteroids = asteroid{
+		Small:  lazyLoadAsteroids(Small),
+		Medium: lazyLoadAsteroids(Medium),
+		Large:  lazyLoadAsteroids(Large),
+	}
+
+	// return a random asteroid image for the given size
+	Asteroid = func(size AsteroidSize) *ebiten.Image {
+		index := rand.IntN(maxAsteroid - 1)
+
+		switch size {
+		case Medium:
+			return asteroids.Medium()[index]
+		case Large:
+			return asteroids.Large()[index]
+		default:
+			return asteroids.Small()[index]
+		}
 	}
 )
