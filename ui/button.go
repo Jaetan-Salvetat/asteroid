@@ -6,7 +6,6 @@ import (
 
 	"asteroid/assets"
 	"asteroid/core/geo"
-	"asteroid/core/sound"
 	"asteroid/input"
 )
 
@@ -75,9 +74,9 @@ func (s Button) image() *ebiten.Image {
 
 func (s *Button) playSound() {
 	if s.previousState == StateIdle && s.state == StateHovered {
-		sound.Hover.Play()
+		assets.Hover.Play()
 	} else if s.previousState == StateHovered && s.state == StateActive {
-		sound.Click.Play()
+		assets.Click.Play()
 	}
 }
 

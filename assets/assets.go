@@ -31,19 +31,3 @@ func Font(size float64) *text.GoTextFace {
 		Size:   size,
 	}
 }
-
-func lazyBytes(path string) func() []byte {
-	return sync.OnceValue(func() []byte {
-		b, err := fs.ReadFile(path)
-		if err != nil {
-			panic(err)
-		}
-
-		return b
-	})
-}
-
-var (
-	SfxHover = lazyBytes("sfx/hover.ogg")
-	SfxClick = lazyBytes("sfx/click.ogg")
-)
