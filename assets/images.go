@@ -3,6 +3,8 @@ package assets
 import (
 	"sync"
 
+	_ "golang.org/x/image/webp"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
@@ -65,8 +67,8 @@ var (
 
 	Ship = ship{
 		Cyan:   lazyImage("images/game/ship/01_cyan.webp"),
-		Green:  lazyImage("images/game/ship/02_green.webp"),
-		Pink:   lazyImage("images/game/ship/03_pink.webp"),
+		Green:  lazyImage("images/game/ship/02_pink.webp"),
+		Pink:   lazyImage("images/game/ship/03_green.webp"),
 		Purple: lazyImage("images/game/ship/04_purple.webp"),
 		Blue:   lazyImage("images/game/ship/05_blue.webp"),
 		Yellow: lazyImage("images/game/ship/06_yellow.webp"),

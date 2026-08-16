@@ -11,18 +11,7 @@ import (
 
 const rate = 48000
 
-var context = sync.OnceValue(func() *audio.Context { return audio.NewContext(rate) })
-
-func lazyBytes(path string) func() []byte {
-	return sync.OnceValue(func() []byte {
-		b, err := fs.ReadFile(path)
-		if err != nil {
-			panic(err)
-		}
-
-		return b
-	})
-}
+var ctx = sync.OnceValue(func() *audio.Context { return audio.NewContext(rate) })
 
 type Effect struct {
 	bytes func() []byte
@@ -30,8 +19,12 @@ type Effect struct {
 
 func newEffect(path string) Effect {
 	b := sync.OnceValue(func() []byte {
-		b := lazyBytes(path)
-		stream, err := vorbis.DecodeWithSampleRate(rate, bytes.NewReader(b()))
+		soundBytes, err := fs.ReadFile(path)
+		if err != nil {
+			panic(err)
+		}
+
+		stream, err := vorbis.DecodeWithSampleRate(rate, bytes.NewReader(soundBytes))
 		if err != nil {
 			panic(err)
 		}
@@ -47,8 +40,11 @@ func newEffect(path string) Effect {
 	return Effect{bytes: b}
 }
 
-func (e *Effect) Play() {
-	player := context().NewPlayerFromBytes(e.bytes())
+func (e Effect) Play() {
+	player := ctx().NewPlayerFromBytes(e.bytes())
+
+	defer player.Close()
+
 	player.Play()
 }
 
