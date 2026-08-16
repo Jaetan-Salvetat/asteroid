@@ -5,7 +5,7 @@ import (
 	"asteroid/config"
 	"asteroid/core"
 	"asteroid/core/geo"
-	"asteroid/input"
+	"asteroid/core/render"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -32,15 +32,22 @@ func NewShip(position geo.Vector2) Ship {
 	}
 }
 
-func (s *Ship) Update(in input.Inputs) {
+func (s *Ship) Update(intent Intent) {
 	s.shootCooldown.Update()
-	s.move(in)
+	s.move(intent.Movement)
 	s.wrap()
-	s.rotate(in.Mouse.Cursor)
+	s.rotate(intent.Mouse.Cursor)
 }
 
-func (s *Ship) CanShoot() bool {
-	return s.shootCooldown.IsExpired()
+func (s *Ship) Draw(scene *ebiten.Image) {
+	opt := render.ImageOptionsCentered(s.sprite.Bounds())
+	opt.GeoM.Rotate(s.rotation)
+	opt.GeoM.Translate(s.position.X, s.position.Y)
+	scene.DrawImage(s.sprite, opt)
+}
+
+func (s *Ship) CanShoot(intent Intent) bool {
+	return s.shootCooldown.IsExpired() && intent.Shooting
 }
 
 func (s *Ship) Shoot() Bullet {
@@ -49,23 +56,10 @@ func (s *Ship) Shoot() Bullet {
 	return NewBullet(s.position, s.Direction)
 }
 
-func (s *Ship) move(in input.Inputs) {
-	dx, dw := 0.0, 0.0
-
-	if in.Keyboard.Pressed(ebiten.KeyW) {
-		dw -= 1
-	}
-	if in.Keyboard.Pressed(ebiten.KeyS) {
-		dw += 1
-	}
-	if in.Keyboard.Pressed(ebiten.KeyA) {
-		dx -= 1
-	}
-	if in.Keyboard.Pressed(ebiten.KeyD) {
-		dx += 1
-	}
-
-	s.position = s.position.Add(geo.Vector2{X: dx, Y: dw}.Normalize().Scale(s.speed / float64(ebiten.TPS())))
+func (s *Ship) move(mouvement geo.Vector2) {
+	s.position = s.position.Add(
+		mouvement.Normalize().Scale(s.speed / float64(ebiten.TPS())),
+	)
 }
 
 func (s *Ship) rotate(mouse geo.Vector2) {
